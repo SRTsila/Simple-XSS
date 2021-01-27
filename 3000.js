@@ -18,7 +18,7 @@ app.post("/register", urlencodedParser, function (request, response) {
     else
         response.send(`<body> ${request.body.userName} - ${request.body.userAge}<br>
                                 Current comment - ${request.body.comment}<br>
-                                Previous comment - ${dataBase[dataBase.length - 1].comment}</body>`);
+                                Previous comments - ${getPreviousComments()}</body>`);
     dataBase.push({
         userName: request.body.userName,
         userAge: request.body.userAge,
@@ -26,6 +26,16 @@ app.post("/register", urlencodedParser, function (request, response) {
     })
 
 });
+
+function getPreviousComments(){
+    let result = "<br>"
+    for (let record of dataBase){
+        result+=record.userName+' - ' + record.userAge + ' - ' + record.comment
+        result +='<br>'
+    }
+    return result
+}
+
 app.get("/", function (request, response) {
     response.set({'Set-Cookie': 'login=yes'});
     response.send("Главная страница");
